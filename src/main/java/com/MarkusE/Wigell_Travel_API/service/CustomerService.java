@@ -53,10 +53,17 @@ public class CustomerService {
                 dto.city()
         );
 
-        address.setCustomer(customer);
+        // Spara adress först
+        Address savedAddress = addressRepo.save(address);
 
-        return addressRepo.save(address);
-    };
+        // Koppla customer till adress
+        customer.setAddress(savedAddress);
+
+        // Spara customer
+        customerRepo.save(customer);
+
+        return savedAddress;
+    }
 
     public void deleteAddress(Long customerId, Long addressId) {
         Address address = addressRepo.findById(addressId)
