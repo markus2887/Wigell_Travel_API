@@ -69,6 +69,10 @@ public class CustomerService {
         Address address = addressRepo.findById(addressId)
                 .orElseThrow();
 
+        if (!address.getCustomer().getId().equals(customerId)) {
+            throw new RuntimeException("Address does not belong to this customer");
+        }
+
         addressRepo.delete(address);
     }
 }

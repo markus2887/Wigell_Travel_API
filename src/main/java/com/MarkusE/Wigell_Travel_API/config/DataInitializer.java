@@ -2,9 +2,11 @@ package com.MarkusE.Wigell_Travel_API.config;
 
 import com.MarkusE.Wigell_Travel_API.entity.Address;
 import com.MarkusE.Wigell_Travel_API.entity.Customer;
+import com.MarkusE.Wigell_Travel_API.entity.Destination;
 import com.MarkusE.Wigell_Travel_API.repo.AddressRepository;
 import com.MarkusE.Wigell_Travel_API.repo.AppUserRepository;
 import com.MarkusE.Wigell_Travel_API.repo.CustomerRepository;
+import com.MarkusE.Wigell_Travel_API.repo.DestinationRepository;
 import com.MarkusE.Wigell_Travel_API.security.AppUser;
 import com.MarkusE.Wigell_Travel_API.security.Role;
 import com.MarkusE.Wigell_Travel_API.service.CustomerService;
@@ -22,18 +24,20 @@ public class DataInitializer implements CommandLineRunner {
     private final AddressRepository addressRepository;
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final DestinationRepository destinationRepository;
 
-    public DataInitializer(CustomerRepository customerRepository, CustomerService customerService, AddressRepository addressRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    public DataInitializer(CustomerRepository customerRepository, CustomerService customerService, AddressRepository addressRepository, AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, DestinationRepository destinationRepository) {
         this.customerRepository = customerRepository;
         this.addressRepository = addressRepository;
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.destinationRepository = destinationRepository;
     }
 
     @Override
     public void run(String... args) {
 
-
+        /*
         Address address = addressRepository.save(new Address("Granvägen 28", "432 33", "Varberg"));
         Address addressTwo = addressRepository.save(new Address("Stengatan 10", "432 45", "Göteborg"));
 
@@ -42,9 +46,12 @@ public class DataInitializer implements CommandLineRunner {
         customerRepository.save(new Customer("Kalle", "Andersson", "And99", addressTwo, "kalle.andersson@gmail.com", "073543534", LocalDate.of(1999, 12, 4)));
         customerRepository.save(new Customer("Sara", "Eliasson", "Eliasson777", addressTwo, "sara.eliasson@gmail.com", "0705345344", LocalDate.of(1987, 2, 16)));
         customerRepository.save(new Customer("Thomas", "Nilsson", "Tompa83", addressTwo, "thomas.nilsson@gmail.com", "0734534541", LocalDate.of(1983, 6, 15)));
+        */
+        destinationRepository.save(new Destination(19000,"Gordina", "Budapest", "Ungern"));
 
     }
 
+/*
     @PostConstruct
     public void init() {
         AppUser admin = new AppUser(
@@ -61,5 +68,5 @@ public class DataInitializer implements CommandLineRunner {
 
         appUserRepository.save(admin);
         appUserRepository.save(user);
-    }
+    }*/
 }
