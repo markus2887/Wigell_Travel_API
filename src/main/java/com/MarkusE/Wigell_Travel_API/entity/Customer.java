@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "members")
-public class Member {
+@Table(name = "customers")
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,9 @@ public class Member {
 
     @Column(name = "lastName", length = 35, nullable = false)
     private String lastName;
+
+    @Column(name = "user_name", length = 35, nullable = false)
+    private String userName;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "address", nullable = false)
@@ -34,11 +37,12 @@ public class Member {
     @Column(name = "dateOfBirth", nullable = false, unique = true)
     private LocalDate dateOfBirth;
 
-    protected Member() {}
+    protected Customer() {}
 
-    public Member(String firstName, String lastName, Address address, String email, String phone, LocalDate dateOfBirth) {
+    public Customer(String firstName, String lastName, String userName, Address address, String email, String phone, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userName = userName;
         this.address = address;
         this.email = email;
         this.phone = phone;
@@ -95,5 +99,13 @@ public class Member {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

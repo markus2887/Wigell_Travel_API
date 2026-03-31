@@ -2,11 +2,11 @@ package com.MarkusE.Wigell_Travel_API.dto;
 
 import java.time.LocalDate;
 
-public record MemberResponseDto(
-        Long id,
+public record CreateCustomerDto(
         String firstName,
         String lastName,
-        AddressDto address,
+        String userName,
+        Long addressId,
         String email,
         String phone,
         LocalDate dateOfBirth

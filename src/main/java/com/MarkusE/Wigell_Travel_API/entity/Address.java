@@ -24,7 +24,7 @@ public class Address {
 
     @OneToMany(mappedBy = "address")
     @JsonIgnore
-    private List<com.MarkusE.Wigell_Travel_API.entity.Member> members;
+    private List<Customer> customers;
 
     protected Address() {}
 
