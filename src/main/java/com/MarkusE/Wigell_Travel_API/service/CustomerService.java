@@ -65,14 +65,32 @@ public class CustomerService {
         return savedAddress;
     }
 
-    public void deleteAddress(Long customerId, Long addressId) {
-        Address address = addressRepo.findById(addressId)
-                .orElseThrow();
+    public void removeAddressFromCustomer(Long customerId, Long addressId) {
 
-        if (!address.getCustomer().getId().equals(customerId)) {
-            throw new RuntimeException("Address does not belong to this customer");
+        Customer customer = customerRepo.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        Address address = customer.getAddress();
+
+        if (address == null) {
+            throw new RuntimeException("Customer has no address");
         }
 
-        addressRepo.delete(address);
+        // säkerställ rätt adress
+        if (!address.getAddressId().equals(addressId)) {
+            throw new RuntimeException("Wrong address");
+        }
+
+        // 1. ta bort koppling
+        customer.setAddress(null);
+        customerRepo.save(customer);
+
+        // 2. kolla om någon annan använder adressen
+        long count = customerRepo.countByAddress_Id(addressId);
+
+        // 3. om ingen använder → radera
+        if (count == 0) {
+            addressRepo.deleteById(addressId);
+        }
     }
 }

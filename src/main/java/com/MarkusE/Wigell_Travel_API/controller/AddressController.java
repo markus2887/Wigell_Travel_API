@@ -27,7 +27,7 @@ public class AddressController {
 
     @DeleteMapping("/{addressId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void delete(@PathVariable Long customerId, @PathVariable Long addressId) {
-        service.deleteAddress(customerId, addressId);
+    public void removeAddress(@PathVariable Long customerId, @PathVariable Long addressId) {
+        service.removeAddressFromCustomer(customerId, addressId);
     }
 }

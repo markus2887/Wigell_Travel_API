@@ -36,8 +36,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
-        /*
         Address address = addressRepository.save(new Address("Granvägen 28", "432 33", "Varberg"));
         Address addressTwo = addressRepository.save(new Address("Stengatan 10", "432 45", "Göteborg"));
 
@@ -46,14 +44,13 @@ public class DataInitializer implements CommandLineRunner {
         customerRepository.save(new Customer("Kalle", "Andersson", "And99", addressTwo, "kalle.andersson@gmail.com", "073543534", LocalDate.of(1999, 12, 4)));
         customerRepository.save(new Customer("Sara", "Eliasson", "Eliasson777", addressTwo, "sara.eliasson@gmail.com", "0705345344", LocalDate.of(1987, 2, 16)));
         customerRepository.save(new Customer("Thomas", "Nilsson", "Tompa83", addressTwo, "thomas.nilsson@gmail.com", "0734534541", LocalDate.of(1983, 6, 15)));
-        */
-        destinationRepository.save(new Destination(19000,"Gordina", "Budapest", "Ungern"));
 
-    }
+        destinationRepository.save(new Destination(19000,"Hilton Budapest", "Budapest", "Ungern"));
+        destinationRepository.save(new Destination(50000,"Jumeira Rotana", "Dubai", "United Arab Emirates"));
+        destinationRepository.save(new Destination(3000,"Hostel Para Tapok", "Moskva", "Ryssland"));
+        destinationRepository.save(new Destination(6000,"Hilton Kyiv", "Kyiv", "Ukraine"));
+        destinationRepository.save(new Destination(49000,"Hotel Meigetsu", "Tokyo", "Japan"));
 
-/*
-    @PostConstruct
-    public void init() {
         AppUser admin = new AppUser(
                 "admin",
                 passwordEncoder.encode("admin"),
@@ -68,5 +65,30 @@ public class DataInitializer implements CommandLineRunner {
 
         appUserRepository.save(admin);
         appUserRepository.save(user);
-    }*/
+    }
+
+
+    @PostConstruct
+    public void init() {/*
+        AppUser admin = new AppUser(
+                "admin",
+                passwordEncoder.encode("admin"),
+                Role.ADMIN
+        );
+
+        AppUser user = new AppUser(
+                "user",
+                passwordEncoder.encode("user"),
+                Role.USER
+        );
+
+        appUserRepository.save(admin);
+        appUserRepository.save(user);
+        */
+    }
+
+
+
+
+
 }
