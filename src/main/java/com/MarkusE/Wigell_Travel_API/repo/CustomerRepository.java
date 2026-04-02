@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    long countByAddress_Id(Long addressId);
+    long countByAddress_AddressId(Long addressId);
 
 }

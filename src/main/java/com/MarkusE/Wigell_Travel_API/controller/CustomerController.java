@@ -6,15 +6,17 @@ import com.MarkusE.Wigell_Travel_API.entity.Address;
 import com.MarkusE.Wigell_Travel_API.entity.Customer;
 import com.MarkusE.Wigell_Travel_API.mapper.CustomerMapper;
 import com.MarkusE.Wigell_Travel_API.service.CustomerService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @EnableMethodSecurity
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     private final CustomerService service;
@@ -25,7 +27,8 @@ public class CustomerController {
         this.mapper = mapper;
     }
 
-    @GetMapping("/customers")
+
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public List<CustomerResponseDto> getAllCustomers() {
 
@@ -35,13 +38,31 @@ public class CustomerController {
                 .toList();
     }
 
-    @GetMapping("/customers/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public CustomerResponseDto getById(@PathVariable Long id) {
         return mapper.toResponseDto(service.findById(id));
     }
 
-    @PostMapping("/customers")
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CustomerResponseDto> create(@RequestBody CreateCustomerDto dto) {
+
+        Address address = service.getAddress(dto.addressId());
+        Customer customer = mapper.toEntity(dto, address);
+
+        Customer saved = service.save(customer);
+
+        CustomerResponseDto responseDto = mapper.toResponseDto(saved);
+
+        URI location = URI.create("/api/v1/customers/" + saved.getId());
+
+        return ResponseEntity
+                .created(location) // 👈 201 + Location header
+                .body(responseDto);
+    }
+
+    /*@PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public CustomerResponseDto create(@RequestBody CreateCustomerDto dto) {
 
@@ -49,9 +70,9 @@ public class CustomerController {
         Customer customer = mapper.toEntity(dto, address);
 
         return mapper.toResponseDto(service.save(customer));
-    }
+    }*/
 
-    @PutMapping("/customers/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public CustomerResponseDto update(@PathVariable Long id, @RequestBody CreateCustomerDto dto) {
 
@@ -62,7 +83,7 @@ public class CustomerController {
         return mapper.toResponseDto(service.save(existing));
     }
 
-    @PatchMapping("/customers/{id}")
+    @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public CustomerResponseDto patch(@PathVariable Long id, @RequestBody CreateCustomerDto dto) {
 
@@ -78,7 +99,7 @@ public class CustomerController {
         return mapper.toResponseDto(service.save(existing));
     }
 
-    @DeleteMapping("/customers/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         service.delete(id);

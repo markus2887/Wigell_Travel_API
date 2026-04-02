@@ -23,8 +23,8 @@ public class Customer {
     @Column(name = "user_name", length = 35, nullable = false)
     private String userName;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "address", nullable = false)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_Id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Address address;
 

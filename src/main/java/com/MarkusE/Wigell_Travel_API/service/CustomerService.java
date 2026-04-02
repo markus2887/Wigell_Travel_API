@@ -44,25 +44,32 @@ public class CustomerService {
     }
 
     public Address saveAddress(Long customerId, AddressDto dto) {
+
         Customer customer = customerRepo.findById(customerId)
                 .orElseThrow();
 
-        Address address = new Address(
-                dto.street(),
-                dto.postalCode(),
-                dto.city()
-        );
+        // 🔍 Kolla om adressen redan finns
+        Address address = addressRepo
+                .findByStreetAndPostalCodeAndCity(
+                        dto.street(),
+                        dto.postalCode(),
+                        dto.city()
+                )
+                .orElseGet(() -> {
+                    // ➕ Skapa ny om den inte finns
+                    Address newAddress = new Address(
+                            dto.street(),
+                            dto.postalCode(),
+                            dto.city()
+                    );
+                    return addressRepo.save(newAddress);
+                });
 
-        // Spara adress först
-        Address savedAddress = addressRepo.save(address);
-
-        // Koppla customer till adress
-        customer.setAddress(savedAddress);
-
-        // Spara customer
+        // 🔗 Koppla customer till adress
+        customer.setAddress(address);
         customerRepo.save(customer);
 
-        return savedAddress;
+        return address;
     }
 
     public void removeAddressFromCustomer(Long customerId, Long addressId) {
@@ -82,11 +89,11 @@ public class CustomerService {
         }
 
         // 1. ta bort koppling
-        customer.setAddress(null);
+        customer.setAddress(new Address("", "", ""));
         customerRepo.save(customer);
 
         // 2. kolla om någon annan använder adressen
-        long count = customerRepo.countByAddress_Id(addressId);
+        long count = customerRepo.countByAddress_AddressId(addressId);
 
         // 3. om ingen använder → radera
         if (count == 0) {

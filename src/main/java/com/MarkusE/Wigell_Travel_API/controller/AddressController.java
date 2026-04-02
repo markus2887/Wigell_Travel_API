@@ -18,10 +18,7 @@ public class AddressController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Address create(
-            @PathVariable Long customerId,
-            @RequestBody AddressDto dto
-    ) {
+    public Address create(@PathVariable Long customerId, @RequestBody AddressDto dto) {
         return service.saveAddress(customerId, dto);
     }
 

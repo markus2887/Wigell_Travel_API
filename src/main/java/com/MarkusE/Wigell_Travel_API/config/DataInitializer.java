@@ -36,6 +36,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+/*
         Address address = addressRepository.save(new Address("Granvägen 28", "432 33", "Varberg"));
         Address addressTwo = addressRepository.save(new Address("Stengatan 10", "432 45", "Göteborg"));
 
@@ -65,6 +66,7 @@ public class DataInitializer implements CommandLineRunner {
 
         appUserRepository.save(admin);
         appUserRepository.save(user);
+ */
     }
 
 
