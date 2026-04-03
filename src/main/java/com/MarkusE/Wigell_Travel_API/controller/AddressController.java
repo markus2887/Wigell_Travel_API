@@ -3,8 +3,11 @@ package com.MarkusE.Wigell_Travel_API.controller;
 import com.MarkusE.Wigell_Travel_API.dto.AddressDto;
 import com.MarkusE.Wigell_Travel_API.entity.Address;
 import com.MarkusE.Wigell_Travel_API.service.CustomerService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/customers/{customerId}/addresses")
@@ -18,13 +21,23 @@ public class AddressController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Address create(@PathVariable Long customerId, @RequestBody AddressDto dto) {
-        return service.saveAddress(customerId, dto);
+    public ResponseEntity<Address> create(@PathVariable Long customerId, @RequestBody AddressDto dto) {
+
+        Address saved = service.saveAddress(customerId, dto);
+
+        URI location = URI.create(
+                "/api/v1/customers/" + customerId + "/addresses/" + saved.getAddressId()
+        );
+
+        return ResponseEntity
+                .created(location) // 201 + Location header
+                .body(saved);
     }
 
     @DeleteMapping("/{addressId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void removeAddress(@PathVariable Long customerId, @PathVariable Long addressId) {
+    public ResponseEntity<Void> removeAddress(@PathVariable Long customerId, @PathVariable Long addressId) {
         service.removeAddressFromCustomer(customerId, addressId);
+        return ResponseEntity.noContent().build();
     }
 }

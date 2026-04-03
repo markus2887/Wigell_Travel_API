@@ -89,7 +89,9 @@ public class CustomerService {
         }
 
         // 1. ta bort koppling
-        customer.setAddress(new Address("", "", ""));
+        Address emptyAddress = new Address("", "", "");
+        addressRepo.save(emptyAddress);
+        customer.setAddress(emptyAddress);
         customerRepo.save(customer);
 
         // 2. kolla om någon annan använder adressen

@@ -38,12 +38,6 @@ public class CustomerController {
                 .toList();
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public CustomerResponseDto getById(@PathVariable Long id) {
-        return mapper.toResponseDto(service.findById(id));
-    }
-
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomerResponseDto> create(@RequestBody CreateCustomerDto dto) {
@@ -62,16 +56,6 @@ public class CustomerController {
                 .body(responseDto);
     }
 
-    /*@PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public CustomerResponseDto create(@RequestBody CreateCustomerDto dto) {
-
-        Address address = service.getAddress(dto.addressId());
-        Customer customer = mapper.toEntity(dto, address);
-
-        return mapper.toResponseDto(service.save(customer));
-    }*/
-
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public CustomerResponseDto update(@PathVariable Long id, @RequestBody CreateCustomerDto dto) {
@@ -83,25 +67,10 @@ public class CustomerController {
         return mapper.toResponseDto(service.save(existing));
     }
 
-    @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public CustomerResponseDto patch(@PathVariable Long id, @RequestBody CreateCustomerDto dto) {
-
-        Customer existing = service.findById(id);
-
-        Address address = null;
-        if (dto.addressId() != null) {
-            address = service.getAddress(dto.addressId());
-        }
-
-        mapper.updateCustomer(dto, existing, address);
-
-        return mapper.toResponseDto(service.save(existing));
-    }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
